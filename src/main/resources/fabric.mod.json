@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "locator-triangulator",
+  "version": "${version}",
+  "name": "Locator Triangulator",
+  "description": "Trianguliert die Position anderer Spieler aus den Azimut-Daten der Locator Bar.",
+  "authors": ["du"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "de.gohdeuf.triangulator.TriangulatorMod"
+    ]
+  },
+  "mixins": [
+    "triangulator.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "fabric-api": "*",
+    "minecraft": "~26.3",
+    "java": ">=25"
+  }
+}

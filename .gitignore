@@ -1,0 +1,18 @@
+# Gradle-Build-Ordner und Caches
+.gradle/
+build/
+
+# Fabric- und Minecraft-Laufzeitdateien (wichtig für Gradle-Run-Tasks)
+run/
+.vsh/
+mixin.refmap.json
+
+# Java / IDE-spezifische Dateien (VS Code & IntelliJ)
+.vscode/
+.idea/
+*.launch
+*.iml
+
+# Betriebssystem-Dateien
+.DS_Store
+Thumbs.db
