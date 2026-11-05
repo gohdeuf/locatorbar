@@ -5,6 +5,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import de.gohdeuf.triangulator.config.TriConfig;
+import de.gohdeuf.triangulator.TriangulatorMod;
 import de.gohdeuf.triangulator.triangulation.LeastSquaresTriangulator;
 import de.gohdeuf.triangulator.waypoint.TrackedTarget;
 import de.gohdeuf.triangulator.waypoint.WaypointStore;
@@ -45,9 +47,10 @@ public final class TriangulationHud {
                         Comparator.nullsLast(Comparator.naturalOrder()))
                 .thenComparing(target -> target.id));
         List<HudLine> lines = new ArrayList<>();
-        lines.add(new HudLine("Spieler-Ortung  |  J: ein/aus", 0xFFFFFFFF));
+        lines.add(new HudLine(Component.translatable(
+                "hud.triangulator.toggle", TriangulatorMod.getToggleHudKeyName()).getString(), 0xFFFFFFFF));
         if (targets.isEmpty()) {
-            lines.add(new HudLine("Warte auf Spieler-Peilungen ...", 0xFFFFAA00));
+            lines.add(new HudLine(Component.translatable("hud.triangulator.waiting").getString(), 0xFFFFAA00));
         } else {
             for (TrackedTarget t : targets) {
                 var directPosition = t.directPosition();
@@ -55,14 +58,14 @@ public final class TriangulationHud {
                     TrackedTarget.DirectPosition position = directPosition.get();
                     double distance = Math.hypot(position.x() - player.getX(), position.z() - player.getZ());
                     lines.add(new HudLine(
-                            String.format("%s  %s X %.0f Z %.0f  |  %.0fm",
+                            Component.translatable("hud.triangulator.direct_position",
                                     t.name(), position.approximate() ? "~" : "",
-                                    position.x(), position.z(), distance),
+                                    position.x(), position.z(), distance).getString(),
                             t.color | 0xFF000000));
                     lines.add(new HudLine(
-                            position.approximate()
-                                    ? "Ungefähre Chunk-Position; weiter annähern"
-                                    : "Direkte Locator-Position verfügbar",
+                            Component.translatable(position.approximate()
+                                    ? "hud.triangulator.approximate_position"
+                                    : "hud.triangulator.direct_position_available").getString(),
                             position.approximate() ? 0xFFFFAA00 : 0xFF55FF55));
                     continue;
                 }
@@ -74,24 +77,24 @@ public final class TriangulationHud {
                     double dz = r.z() - player.getZ();
                     double dist = Math.hypot(dx, dz);
                     lines.add(new HudLine(
-                            String.format("%s  X %.0f  Z %.0f  | %.0fm  ±%.1fm",
-                                    t.name(), r.x(), r.z(), dist, r.rmsResidual()),
+                            Component.translatable("hud.triangulator.estimate",
+                                    t.name(), r.x(), r.z(), dist, r.rmsResidual()).getString(),
                             t.color | 0xFF000000));
                     lines.add(new HudLine(
-                            r.illConditioned()
-                                    ? "Weiter seitlich bewegen: Peilwinkel zu ähnlich"
-                                    : "Peilwinkel reichen; mehr Abstand verbessert die Genauigkeit",
+                            Component.translatable(r.illConditioned()
+                                    ? "hud.triangulator.move_sideways"
+                                    : "hud.triangulator.bearings_sufficient").getString(),
                             r.illConditioned() ? 0xFFFFAA00 : 0xFF55FF55));
                 } else {
                     int samples = t.sampleCount();
                     int required = TriConfig.get().minSamplesForEstimate;
                     String status = samples == 0
-                            ? String.format("%s  Warte auf erste Peilung", t.name())
+                            ? Component.translatable("hud.triangulator.waiting_for_first_bearing", t.name()).getString()
                             : samples < required
-                                    ? String.format("%s  Peilungen %d/%d – Standpunkt wechseln",
-                                            t.name(), samples, required)
-                                    : String.format("%s  Peilwinkel zu ähnlich – seitlich bewegen",
-                                            t.name());
+                                    ? Component.translatable("hud.triangulator.change_position",
+                                            t.name(), samples, required).getString()
+                                    : Component.translatable("hud.triangulator.bearings_too_similar",
+                                            t.name()).getString();
                     lines.add(new HudLine(status, 0xFFFFAA00));
                 }
             }

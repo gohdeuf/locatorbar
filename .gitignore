@@ -1,6 +1,7 @@
 # Gradle-Build-Ordner und Caches
 .gradle/
 build/
+bin
 
 # Fabric- und Minecraft-Laufzeitdateien (wichtig für Gradle-Run-Tasks)
 run/

@@ -1,3 +1,22 @@
 {
-  "key.triangulator.toggleHud": "Spieler-Ortung anzeigen/ausblenden"
+  "key.triangulator.toggleHud": "Spieler-Ortung anzeigen/ausblenden",
+  "hud.triangulator.toggle": "Spieler-Ortung | %s: umschalten",
+  "hud.triangulator.waiting": "Warte auf Spieler-Peilungen...",
+  "hud.triangulator.direct_position": "%s  %sX %.0f Z %.0f  |  %.0fm",
+  "hud.triangulator.approximate_position": "Ungefähre Chunk-Position; weiter annähern",
+  "hud.triangulator.direct_position_available": "Direkte Locator-Position verfügbar",
+  "hud.triangulator.estimate": "%s  X %.0f  Z %.0f  | %.0fm  ±%.1fm",
+  "hud.triangulator.move_sideways": "Weiter seitlich bewegen: Peilwinkel zu ähnlich",
+  "hud.triangulator.bearings_sufficient": "Peilwinkel reichen; mehr Abstand verbessert die Genauigkeit",
+  "hud.triangulator.waiting_for_first_bearing": "%s  Warte auf erste Peilung",
+  "hud.triangulator.change_position": "%s  Peilungen %d/%d - Standpunkt wechseln",
+  "hud.triangulator.bearings_too_similar": "%s  Peilwinkel zu ähnlich - seitlich bewegen",
+  "commands.triangulator.status.estimate": "%s: X %.0f Z %.0f, %.0fm, ±%.1fm, %d Peilungen",
+  "commands.triangulator.status.pending": "%s: %d Peilungen",
+  "commands.triangulator.license.page_count": "Die Lizenz hat nur %d Seiten.",
+  "commands.triangulator.license.page": "GNU General Public License v3.0  |  Seite %d/%d",
+  "commands.triangulator.license.previous": "« Zurück",
+  "commands.triangulator.license.next": "Weiter »",
+  "commands.triangulator.license.load_error": "Der Lizenztext konnte nicht geladen werden. Details stehen im Log.",
+  "commands.triangulator.license.show_page": "Lizenzseite %d anzeigen"
 }

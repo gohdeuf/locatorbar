@@ -20,6 +20,10 @@ public class TriangulatorMod implements ClientModInitializer {
 
     private static KeyMapping toggleHudKey;
 
+    public static String getToggleHudKeyName() {
+        return toggleHudKey.getTranslatedKeyMessage().getString();
+    }
+
     @Override
     public void onInitializeClient() {
         TriConfig.load();
