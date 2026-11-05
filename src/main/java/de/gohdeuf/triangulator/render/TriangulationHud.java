@@ -1,5 +1,6 @@
 package de.gohdeuf.triangulator.render;
 
+import com.mojang.blaze3d.platform.Window;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -24,7 +25,72 @@ import de.gohdeuf.triangulator.waypoint.WaypointStore;
  */
 public final class TriangulationHud {
 
+    private static final int LEFT_MOUSE_BUTTON = 0;
+    private static final int MOUSE_RELEASE = 0;
+    private static final int MOUSE_PRESS = 1;
+    private static boolean editing;
+    private static boolean dragging;
+    private static int dragOffsetX;
+    private static int dragOffsetY;
+    private static int panelWidth;
+    private static int panelHeight;
+
     private TriangulationHud() {
+    }
+
+    public static boolean isEditing() {
+        return editing;
+    }
+
+    public static void setEditing(boolean value) {
+        editing = value;
+        if (!editing) {
+            dragging = false;
+            TriConfig.save();
+        }
+    }
+
+    public static boolean handleMouseButton(int button, int action, double mouseX, double mouseY) {
+        if (!editing || button != LEFT_MOUSE_BUTTON) return false;
+
+        if (action == MOUSE_PRESS) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.gui.screen() != null || mc.player == null || mc.gui.hud.isHidden()) return false;
+
+            TriConfig config = TriConfig.get();
+            if (mouseX < config.hudX || mouseX > config.hudX + panelWidth
+                    || mouseY < config.hudY || mouseY > config.hudY + panelHeight) {
+                return false;
+            }
+            dragging = true;
+            dragOffsetX = (int) mouseX - config.hudX;
+            dragOffsetY = (int) mouseY - config.hudY;
+            return true;
+        }
+
+        if (action == MOUSE_RELEASE && dragging) {
+            dragging = false;
+            TriConfig.save();
+            return true;
+        }
+        return false;
+    }
+
+    public static void handleMouseMove(double mouseX, double mouseY) {
+        if (!editing || !dragging) return;
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.gui.screen() != null || mc.player == null || mc.gui.hud.isHidden()) {
+            dragging = false;
+            TriConfig.save();
+            return;
+        }
+
+        Window window = mc.getWindow();
+        TriConfig config = TriConfig.get();
+        config.hudX = Math.max(0, Math.min((int) mouseX - dragOffsetX,
+                window.getGuiScaledWidth() - panelWidth));
+        config.hudY = Math.max(0, Math.min((int) mouseY - dragOffsetY,
+                window.getGuiScaledHeight() - panelHeight));
     }
 
     public static void register() {
@@ -35,7 +101,7 @@ public final class TriangulationHud {
     }
 
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-        if (!TriConfig.get().hudEnabled) return;
+        if (!TriConfig.get().hudEnabled && !editing) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.gui.hud.isHidden()) return;
         LocalPlayer player = mc.player;
@@ -49,6 +115,10 @@ public final class TriangulationHud {
         List<HudLine> lines = new ArrayList<>();
         lines.add(new HudLine(Component.translatable(
                 "hud.triangulator.toggle", TriangulatorMod.getToggleHudKeyName()).getString(), 0xFFFFFFFF));
+        if (editing) {
+            lines.add(new HudLine(Component.translatable(
+                    "hud.triangulator.move", TriangulatorMod.getMoveHudKeyName()).getString(), 0xFF55FF55));
+        }
         if (targets.isEmpty()) {
             lines.add(new HudLine(Component.translatable("hud.triangulator.waiting").getString(), 0xFFFFAA00));
         } else {
@@ -100,16 +170,23 @@ public final class TriangulationHud {
             }
         }
 
-        int x = 8;
-        int y = 8;
         int textWidth = 0;
         for (HudLine line : lines) {
             textWidth = Math.max(textWidth, mc.font.width(Objects.requireNonNull(line.text())));
         }
-        int width = textWidth + 12;
-        int height = lines.size() * 12 + 8;
-        graphics.fill(x, y, x + width, y + height, 0xA0000000);
-        graphics.fill(x, y, x + 2, y + height, 0xFF55AAFF);
+        panelWidth = textWidth + 12;
+        panelHeight = lines.size() * 12 + 8;
+        Window window = mc.getWindow();
+        TriConfig config = TriConfig.get();
+        int x = Math.max(0, Math.min(config.hudX, window.getGuiScaledWidth() - panelWidth));
+        int y = Math.max(0, Math.min(config.hudY, window.getGuiScaledHeight() - panelHeight));
+        if (x != config.hudX || y != config.hudY) {
+            config.hudX = x;
+            config.hudY = y;
+            TriConfig.save();
+        }
+        graphics.fill(x, y, x + panelWidth, y + panelHeight, editing ? 0xC0000000 : 0xA0000000);
+        graphics.fill(x, y, x + 2, y + panelHeight, editing ? 0xFF55FF55 : 0xFF55AAFF);
         for (HudLine line : lines) {
             graphics.text(mc.font, line.text(), x + 7, y + 4, line.color(), false);
             y += 12;

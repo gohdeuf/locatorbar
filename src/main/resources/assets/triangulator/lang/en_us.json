@@ -1,6 +1,10 @@
 {
   "key.triangulator.toggleHud": "Toggle player location HUD",
+  "key.triangulator.moveHud": "Edit HUD position",
   "hud.triangulator.toggle": "Player tracking | %s: toggle",
+  "hud.triangulator.move": "%s: hold left click and drag",
+  "hud.triangulator.editing_started": "Move HUD: hold left click and drag. Press H to finish.",
+  "hud.triangulator.editing_finished": "HUD position saved.",
   "hud.triangulator.waiting": "Waiting for player bearings...",
   "hud.triangulator.direct_position": "%s  %sX %.0f Z %.0f  |  %.0fm",
   "hud.triangulator.approximate_position": "Approximate chunk position; move closer",

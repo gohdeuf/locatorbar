@@ -1,6 +1,10 @@
 {
   "key.triangulator.toggleHud": "Spieler-Ortung anzeigen/ausblenden",
+  "key.triangulator.moveHud": "HUD-Position bearbeiten",
   "hud.triangulator.toggle": "Spieler-Ortung | %s: umschalten",
+  "hud.triangulator.move": "%s: Linksklick halten und ziehen",
+  "hud.triangulator.editing_started": "HUD bewegen: Linksklick halten und ziehen. H beendet.",
+  "hud.triangulator.editing_finished": "HUD-Position gespeichert.",
   "hud.triangulator.waiting": "Warte auf Spieler-Peilungen...",
   "hud.triangulator.direct_position": "%s  %sX %.0f Z %.0f  |  %.0fm",
   "hud.triangulator.approximate_position": "Ungefähre Chunk-Position; weiter annähern",
