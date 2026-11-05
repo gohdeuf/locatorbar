@@ -3,7 +3,8 @@
   "package": "de.gohdeuf.triangulator.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "ClientPacketListenerMixin"
+    "ClientPacketListenerMixin",
+    "HudPositionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

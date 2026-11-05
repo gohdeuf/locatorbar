@@ -1,5 +1,7 @@
 # Locator Triangulator (Fabric, Minecraft 26.3)
 
+Aktuelle Mod-Version: **0.2.0**
+
 Client-Mod, die die seit 1.21.6 existierende **Locator Bar** (`/gamerule locator_bar`) nutzt, um die Positionen anderer Mitspieler per **Triangulation** zu schätzen.
 
 ## 🚀 Funktionsweise
@@ -13,7 +15,10 @@ Client-Mod, die die seit 1.21.6 existierende **Locator Bar** (`/gamerule locator
 
 Mit **J** (änderbar unter *Optionen → Steuerung → Tastenbelegung → Sonstiges*)
 kann die Spieler-Ortung ein- und ausgeblendet werden. Das HUD erscheint links
-oben in einem abgesetzten Panel.
+oben in einem abgesetzten Panel. Mit **H** (änderbar unter *Optionen → Steuerung
+→ Tastenbelegung → Sonstiges*) wird der Bearbeitungsmodus aktiviert. Ziehe das
+HUD mit gehaltener linker Maustaste an die gewünschte Position; mit **H** wird
+die Position gespeichert und der Bearbeitungsmodus beendet.
 
 Folgende Ingame-Befehle stehen zur Verfügung:
 * `/triangulator status` – Zeigt den aktuellen Zustand der Verfolgung und die Anzahl der gesammelten Samples.

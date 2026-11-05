@@ -1,5 +1,6 @@
 package de.gohdeuf.triangulator.config;
 
+import de.gohdeuf.triangulator.LocatorBarTriangulator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -19,6 +20,8 @@ public final class TriConfig {
     private static TriConfig instance;
 
     public boolean hudEnabled = true;
+    public int hudX = 8;
+    public int hudY = 8;
     public int maxSamplesPerTarget = 64;
     public int minSamplesForEstimate = 2;
     /** Messwerte aelter als sampleTTLMillis werden verworfen. */
@@ -41,6 +44,7 @@ public final class TriConfig {
         try (Reader r = Files.newBufferedReader(path)) {
             instance = GSON.fromJson(r, TriConfig.class);
         } catch (IOException e) {
+            LocatorBarTriangulator.LOGGER.error("Unable to load triangulator config from {}", path, e);
             instance = new TriConfig();
         }
         if (instance == null) instance = new TriConfig();
@@ -53,6 +57,7 @@ public final class TriConfig {
                 GSON.toJson(get(), w);
             }
         } catch (IOException ignored) {
+            LocatorBarTriangulator.LOGGER.error("Unable to save triangulator config to {}", path(), ignored);
         }
     }
 

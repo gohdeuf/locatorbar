@@ -1,3 +1,26 @@
 {
-  "key.triangulator.toggleHud": "Toggle player location HUD"
+  "key.triangulator.toggleHud": "Toggle player location HUD",
+  "key.triangulator.moveHud": "Edit HUD position",
+  "hud.triangulator.toggle": "Player tracking | %s: toggle",
+  "hud.triangulator.move": "%s: hold left click and drag",
+  "hud.triangulator.editing_started": "Move HUD: hold left click and drag. Press H to finish.",
+  "hud.triangulator.editing_finished": "HUD position saved.",
+  "hud.triangulator.waiting": "Waiting for player bearings...",
+  "hud.triangulator.direct_position": "%s  %sX %.0f Z %.0f  |  %.0fm",
+  "hud.triangulator.approximate_position": "Approximate chunk position; move closer",
+  "hud.triangulator.direct_position_available": "Direct locator position available",
+  "hud.triangulator.estimate": "%s  X %.0f  Z %.0f  | %.0fm  ±%.1fm",
+  "hud.triangulator.move_sideways": "Move farther sideways: bearing angles are too similar",
+  "hud.triangulator.bearings_sufficient": "Bearings sufficient; more distance improves accuracy",
+  "hud.triangulator.waiting_for_first_bearing": "%s  Waiting for first bearing",
+  "hud.triangulator.change_position": "%s  Bearings %d/%d - change position",
+  "hud.triangulator.bearings_too_similar": "%s  Bearing angles too similar - move sideways",
+  "commands.triangulator.status.estimate": "%s: X %.0f Z %.0f, %.0fm, ±%.1fm, %d bearings",
+  "commands.triangulator.status.pending": "%s: %d bearings",
+  "commands.triangulator.license.page_count": "The license has only %d pages.",
+  "commands.triangulator.license.page": "GNU General Public License v3.0  |  Page %d/%d",
+  "commands.triangulator.license.previous": "« Previous",
+  "commands.triangulator.license.next": "Next »",
+  "commands.triangulator.license.load_error": "Could not load the license text. See the log for details.",
+  "commands.triangulator.license.show_page": "Show license page %d"
 }

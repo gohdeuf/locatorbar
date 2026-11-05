@@ -52,12 +52,14 @@ public final class TriangulatorCommands {
                             .executes(ctx -> {
                                 for (TrackedTarget t : WaypointStore.getInstance().all()) {
                                     var est = t.estimate();
-                                    String msg = est.map(r -> String.format(
-                                                    "%s: X %.0f Z %.0f, %.0fm, ±%.1fm, %d Peilungen",
+                                    String msg = est.map(r -> Component.translatable(
+                                                    "commands.triangulator.status.estimate",
                                                     t.name(), r.x(), r.z(),
                                                     Math.hypot(r.x(), r.z()),
-                                                    r.rmsResidual(), r.sampleCount()))
-                                            .orElse(t.name() + ": " + t.sampleCount() + " Peilungen");
+                                                    r.rmsResidual(), r.sampleCount()).getString())
+                                            .orElseGet(() -> Component.translatable(
+                                                    "commands.triangulator.status.pending",
+                                                    t.name(), t.sampleCount()).getString());
                                     ctx.getSource().sendFeedback(Component.literal(Objects.requireNonNull(msg)));
                                 }
                                 return 1;
@@ -84,7 +86,7 @@ public final class TriangulatorCommands {
             String[] lines = license.split("\\R", -1);
             int pageCount = (lines.length + LICENSE_LINES_PER_PAGE - 1) / LICENSE_LINES_PER_PAGE;
             if (requestedPage > pageCount) {
-                source.sendError(Component.literal("Die Lizenz hat nur " + pageCount + " Seiten."));
+                source.sendError(Component.translatable("commands.triangulator.license.page_count", pageCount));
                 return;
             }
 
@@ -94,37 +96,37 @@ public final class TriangulatorCommands {
                     java.util.Arrays.copyOfRange(lines, firstLine, lastLine));
 
             source.sendFeedback(
-                    Component.literal("GNU General Public License v3.0  |  Seite "
-                            + requestedPage + "/" + pageCount)
+                    Component.translatable("commands.triangulator.license.page",
+                            requestedPage, pageCount)
                             .withStyle(ChatFormatting.GOLD));
             source.sendFeedback(Component.literal(page));
 
             MutableComponent navigation = Component.empty();
             if (requestedPage > 1) {
-                navigation.append(navigationButton("« Zurück", requestedPage - 1));
+                navigation.append(navigationButton("commands.triangulator.license.previous", requestedPage - 1));
             }
             if (requestedPage > 1 && requestedPage < pageCount) {
                 navigation.append(Component.literal("  |  "));
             }
             if (requestedPage < pageCount) {
-                navigation.append(navigationButton("Weiter »", requestedPage + 1));
+                navigation.append(navigationButton("commands.triangulator.license.next", requestedPage + 1));
             }
             if (!navigation.getString().isEmpty()) {
                 source.sendFeedback(navigation);
             }
         } catch (IOException e) {
             LocatorBarTriangulator.LOGGER.error("Unable to open the GPL license text", e);
-            source.sendError(Component.literal("Der Lizenztext konnte nicht geladen werden. Details stehen im Log."));
+            source.sendError(Component.translatable("commands.triangulator.license.load_error"));
         }
     }
 
-    private static MutableComponent navigationButton(String label, int page) {
-        return Component.literal(Objects.requireNonNull(label))
+    private static MutableComponent navigationButton(String translationKey, int page) {
+        return Component.translatable(translationKey)
                 .withStyle(style -> style
                         .withColor(ChatFormatting.AQUA)
                         .withUnderlined(true)
                         .withClickEvent(new ClickEvent.RunCommand("/triangulator lizenz " + page))
                         .withHoverEvent(new HoverEvent.ShowText(
-                                Component.literal("Lizenzseite " + page + " anzeigen"))));
+                                Component.translatable("commands.triangulator.license.show_page", page))));
     }
 }
